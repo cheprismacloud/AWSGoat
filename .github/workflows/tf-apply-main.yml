@@ -29,14 +29,6 @@ jobs:
         shell: bash
 
     steps:
-
-    - name: Run Prisma Cloud 
-        id: prisma-cloud
-        uses: bridgecrewio/checkov-action@master
-        env:
-          PRISMA_API_URL: https://api0.prismacloud.io
-        with:
-          api-key: ${{ secrets.BC_API_KEY }}
           
     - name: Checkout
       uses: actions/checkout@v3
@@ -83,6 +75,14 @@ jobs:
     - name: Terraform Plan Status
       if: steps.plan.outcome == 'failure'
       run: exit 1
+
+    - name: Run Prisma Cloud 
+      id: prisma-cloud
+      uses: bridgecrewio/checkov-action@master
+      env:
+          PRISMA_API_URL: https://api0.prismacloud.io
+      with:
+          api-key: ${{ secrets.BC_API_KEY }}
     
     - name: Terraform Apply
       run: | 
